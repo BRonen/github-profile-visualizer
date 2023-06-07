@@ -4,7 +4,7 @@ module Display = {
     @react.component
     let make = (~profile: GithubService.githubUserProfile) => {
         <Row className="gap-5">
-            <Picture src={profile.avatarUrl}/>
+            <Picture src={profile.avatarUrl} className="h-60"/>
             <div>
                 <Title>{profile.login->React.string}</Title>
                 <Row className="my-5 gap-5">

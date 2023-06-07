@@ -22,7 +22,7 @@ let make = () => {
         | Some(previews) => {
             let pages = Belt.Array.range(1, previews.totalCount / 10)
             <Row className="mt-3 gap-3 justify-end overflow-x-auto">
-                {Js.Array.map(page => <PaginationButton page/>, pages)->React.array}
+                {Js.Array.map(page => <PaginationButton page key={page->Int.toString}/>, pages)->React.array}
             </Row>
         }
         | None => <></>
