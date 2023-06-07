@@ -1,8 +1,8 @@
-open ProfileContext
+open SearchContext
 
 @react.component
 let make = () => {
-    let context = React.useContext(ProfileContext.context)
+    let context = React.useContext(SearchContext.context)
 
     let onChange = (e) => {
         ReactEvent.Form.preventDefault(e)

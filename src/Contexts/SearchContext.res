@@ -1,19 +1,23 @@
 type context = {
-  profile: option<GithubService.githubUser>,
+  previews: option<GithubService.githubUserPreviewList>,
+  setPreviews: (option<GithubService.githubUserPreviewList> => option<GithubService.githubUserPreviewList>) => unit,
   searchQuery: string,
-  setProfile: (option<GithubService.githubUser> => option<GithubService.githubUser>) => unit,
   setSearchQuery: (string => string) => unit,
   loading: bool,
   setLoading: (bool => bool) => unit,
+  page: int,
+  setPage: (int => int) => unit
 }
 
 let context = React.createContext({
-  profile: None,
-  setProfile: _ => (),
+  previews: None,
+  setPreviews: _ => (),
   searchQuery: "",
   setSearchQuery: _ => (),
   loading: false,
   setLoading: _ => (),
+  page: 1,
+  setPage: _ => (),
 })
 
 module ProviderWrapper = {
@@ -24,31 +28,38 @@ module Provider = {
   @react.component
   let make = (~children: React.element) => {
     let (searchQuery, setSearchQuery) = React.useState(() => "")
-    let (profile, setProfile) = React.useState(() => None)
+    let (previews, setPreviews) = React.useState(() => None)
     let (loading, setLoading) = React.useState(() => false)
+    let (page, setPage) = React.useState(() => 1)
 
     let value = {
-      profile, setProfile,
+      previews, setPreviews,
       searchQuery, setSearchQuery,
       loading, setLoading,
+      page, setPage,
     }
 
-    let loadProfile = React.useCallback1(async () => {
+    let loadSuggestions = React.useCallback1(async () => {
       try{
         if(searchQuery == "") { Js.Exn.raiseError("") }
+
         setLoading(_ => true)
-        let userProfile = await GithubService.getUserProfile(searchQuery)
-        setProfile((_) => Some(userProfile))
+
+        let userPreviews = await GithubService.getUserPreviewList(searchQuery, page->Js.Int.toString)
+
+        setPreviews((_) => Some(userPreviews))
+        RescriptReactRouter.push("/")
       } catch {
-        | _ => setProfile((_) => None)
+        | _ => setPreviews((_) => None)
       }
+
       setLoading(_ => false)
-    }, [searchQuery])
+    }, [searchQuery, page->Js.Int.toString])
 
     React.useEffect1(() => {
-        let debounce = setTimeout(() => loadProfile()->ignore, 500)
+        let debounce = setTimeout(() => loadSuggestions()->ignore, 500)
         Some(() => clearTimeout(debounce))
-    }, [loadProfile])
+    }, [loadSuggestions])
 
     <ProviderWrapper value>
       children

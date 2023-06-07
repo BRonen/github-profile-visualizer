@@ -2,13 +2,18 @@
 
 @react.component
 let make = () => {
-  <ProfileContext.Provider>
+  let url = RescriptReactRouter.useUrl()
+
+  <SearchContext.Provider>
     <Header>
-      <ProfileSearchInput/>
+      <SearchInput/>
     </Header>
 
     <Main>
-      <ProfileDisplay/>
+      {switch url.path {
+        | list{"user", username} => <ProfileDisplay username/>
+        | _ => <SearchSuggestionsDisplay/>
+      }}
     </Main>
-  </ProfileContext.Provider>
+  </SearchContext.Provider>
 }

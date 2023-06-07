@@ -2,13 +2,12 @@ open GithubService
 
 module Display = {
     @react.component
-    let make = (~profile) => {
-        
+    let make = (~profile: GithubService.githubUserProfile) => {
         <Row className="gap-5">
             <Picture src={profile.avatarUrl}/>
             <div>
-                <Title>{profile.name->React.string}</Title>
-                <Row className="mt-5 gap-5">
+                <Title>{profile.login->React.string}</Title>
+                <Row className="my-5 gap-5">
                     <SubTitle>
                         {profile.followers->React.int}
                         {" Followers"->React.string}
@@ -18,7 +17,10 @@ module Display = {
                         {" Following"->React.string}
                     </SubTitle>
                 </Row>
-                <Description className="mt-5">{profile.bio->React.string}</Description>
+                {switch profile.bio {
+                    | Some(bio) => <Description>{bio->React.string}</Description>
+                    | None => <></>
+                }}
                 <Row>
                     <a href={profile.htmlUrl}>
                         <Icon src="https://api.iconify.design/mdi:github.svg"/>
@@ -33,10 +35,11 @@ module EmptyDisplay = {
     @react.component
     let make = () => {
         let profilePlaceholder = {
-            name: "Any user found",
+            login: "Any user found",
+            name: None,
             followers: 0,
             following: 0,
-            bio: "",
+            bio: None,
             avatarUrl: "https://api.iconify.design/material-symbols:account-circle.svg",
             htmlUrl: "#",
         }
@@ -46,10 +49,27 @@ module EmptyDisplay = {
 }
 
 @react.component
-let make = () => {
-    let context = React.useContext(ProfileContext.context)
+let make = (~username) => {
+    let (profilez, setProfile) = React.useState(() => None)
+    let (loading, setLoading) = React.useState(() => true)
 
-    switch (context.loading, context.profile) {
+    let loadProfile = React.useCallback1(async () => {
+        Console.log(username)
+        let userProfile = await GithubService.getUserProfile(username)
+        Console.log(userProfile)
+        setProfile(_ => Some(userProfile))
+        setLoading(_ => false)
+    }, [username])
+
+    React.useEffect1(() => {
+        setLoading(_ => true)
+
+        let debounce = setTimeout(() => loadProfile()->ignore, 500)
+
+        Some(_ => clearTimeout(debounce))
+    }, [loadProfile])
+
+    switch (loading, profilez) {
         | (true, _) => <div className="h-60 flex items-center justify-center"><Loading/></div>
         | (false, Some(profile)) => <Display profile />
         | (false, None) => <EmptyDisplay />
