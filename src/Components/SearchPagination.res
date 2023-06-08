@@ -22,7 +22,7 @@ let make = () => {
         | Some(previews) => {
             let pagesCount = previews.totalCount->Int.toFloat /. 10.0
             let pages = Belt.Array.range(1, pagesCount->Math.ceil->Float.toInt)
-            <Row className="mt-3 gap-3 justify-end overflow-x-auto">
+            <Row className="mt-3 gap-3 justify-end">
                 {Js.Array.map(page => <PaginationButton page key={page->Int.toString}/>, pages)->React.array}
             </Row>
         }
