@@ -20,7 +20,7 @@ let make = () => {
         | (true, _) => <Loading/>
         | (false, Some(previews)) => {
             <>
-                <Title className="mb-3">{`Found a total of ${previews.totalCount->Int.toString} results`->React.string}</Title> 
+                <Title className="mb-8">{`Found a total of ${previews.totalCount->Int.toString} results`->React.string}</Title> 
                 <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-4">
                     {Belt.Array.map(previews.items, (item) => <UserPreview item key={item.login}/>)->React.array}
                 </div>
