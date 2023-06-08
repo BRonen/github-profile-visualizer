@@ -12,7 +12,8 @@ let make = () => {
     <Main>
       {switch url.path {
         | list{"user", username} => <ProfileDisplay username/>
-        | _ => <SearchSuggestionsDisplay/>
+        | list{"search"} => <SearchSuggestionsDisplay/>
+        | _ => <Homepage/>
       }}
     </Main>
   </SearchContext.Provider>

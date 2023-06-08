@@ -64,9 +64,12 @@ module Provider = {
         let userPreviews = await GithubService.getUserPreviewList(searchQuery, page->Js.Int.toString)
 
         setPreviews((_) => Some(userPreviews))
-        RescriptReactRouter.push(`/?q=${searchQuery}`)
+        RescriptReactRouter.push(`/search?q=${searchQuery}`)
       } catch {
-        | _ => setPreviews((_) => None)
+        | _ => {
+          RescriptReactRouter.push("/")
+          setPreviews((_) => None)
+        }
       }
 
       setLoading(_ => false)
