@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Profile Display component > should match compoenent snapshot 1`] = `
+<div
+  className="h-60 flex items-center justify-center"
+>
+  <div
+    style={
+      {
+        "animation": "roll 1.5s linear infinite",
+        "border": "2px solid black",
+        "borderBottom": "0px solid transparent",
+        "borderLeft": "0px solid transparent",
+        "borderRadius": "99999px",
+        "height": "3rem",
+        "margin": "auto",
+        "width": "3rem",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Profile Display component > should match component snapshot 1`] = `
+<div
+  className="h-60 flex items-center justify-center"
+>
+  <div
+    style={
+      {
+        "animation": "roll 1.5s linear infinite",
+        "border": "2px solid black",
+        "borderBottom": "0px solid transparent",
+        "borderLeft": "0px solid transparent",
+        "borderRadius": "99999px",
+        "height": "3rem",
+        "margin": "auto",
+        "width": "3rem",
+      }
+    }
+  />
+</div>
+`;

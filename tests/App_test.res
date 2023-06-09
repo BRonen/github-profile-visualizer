@@ -3,9 +3,12 @@ open Bindings
 open ReactTestingLibrary
 open JsDom
 
-testAsync("renders component without crashing", async t => {
-  t->assertions(1)
-  render(<App />)
-  let _ = await screen->findByText("Hello Vite + React + ReScript!");
-  screen->getByText("count is: 0")->expect->toBeInTheDocument
+describe("App Component", _ => {
+  beforeEach(() => {
+    render(<App />)
+  })
+
+  test("should render homepage component", (_) => {
+    screen->getByText("Github Profile Search")->expect->toBeInTheDocument
+  })
 })

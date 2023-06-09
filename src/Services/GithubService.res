@@ -23,7 +23,7 @@ let baseUrl = "https://api.github.com"
 let decodeDictField = (dict, key, decoder) => {
     switch Js.Dict.get(dict, key) {
         | Some(value) => value |> decoder |> Belt.Option.getExn
-        | None => Js.Exn.raiseError("Error")
+        | None => Js.Exn.raiseError(`Error while parsing key<${key}>`)
     }
 }
 

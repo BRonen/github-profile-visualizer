@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Homepage component > should match compoenent snapshot 1`] = `
+[
+  <h1
+    className="text-4xl text-[#4c4f69] mb-3"
+  >
+    Github Profile Search
+  </h1>,
+  <h2
+    className="text-2xl text-[#4c4f69] "
+  >
+    Just type the username of the user on the header input
+  </h2>,
+]
+`;

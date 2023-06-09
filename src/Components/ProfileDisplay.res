@@ -54,9 +54,8 @@ let make = (~username) => {
     let (loading, setLoading) = React.useState(() => true)
 
     let loadProfile = React.useCallback1(async () => {
-        Console.log(username)
         let userProfile = await GithubService.getUserProfile(username)
-        Console.log(userProfile)
+
         setProfile(_ => Some(userProfile))
         setLoading(_ => false)
     }, [username])
