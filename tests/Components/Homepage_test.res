@@ -1,5 +1,5 @@
 open Vitest
-open Bindings
+open Setup
 open ReactTestingLibrary
 open ReactTestRenderer
 open JsDom
@@ -9,9 +9,9 @@ describe("Homepage component", _ => {
     render(<Homepage />)
   })
 
-  test("should match compoenent snapshot", (t) => {
+  test("should match compoenent snapshot", t => {
     t->assertions(1)
 
-    create(<Homepage/>)->expect->toMatchSnapshot
+    create(<Homepage />)->expect->toMatchSnapshot
   })
 })

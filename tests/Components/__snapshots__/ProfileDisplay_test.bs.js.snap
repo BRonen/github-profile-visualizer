@@ -1,27 +1,59 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Profile Display component > should match compoenent snapshot 1`] = `
+exports[`Profile Display component > should match component snapshot after profile loaded 1`] = `
 <div
-  className="h-60 flex items-center justify-center"
+  className="flex flex-row gap-5"
 >
-  <div
-    style={
-      {
-        "animation": "roll 1.5s linear infinite",
-        "border": "2px solid black",
-        "borderBottom": "0px solid transparent",
-        "borderLeft": "0px solid transparent",
-        "borderRadius": "99999px",
-        "height": "3rem",
-        "margin": "auto",
-        "width": "3rem",
-      }
-    }
+  <img
+    alt="Profile picture"
+    className="rounded-lg border shadow-lg h-60"
+    src="#avatarUrl"
   />
+  <div>
+    <h1
+      className="text-4xl text-[#4c4f69] "
+    >
+      johnny
+    </h1>
+    <div
+      className="flex flex-row my-5 gap-5"
+    >
+      <h2
+        className="text-2xl text-[#4c4f69] "
+      >
+        100
+         Followers
+      </h2>
+      <h2
+        className="text-2xl text-[#4c4f69] "
+      >
+        99
+         Following
+      </h2>
+    </div>
+    <p
+      className="ml-1 pb-3 text-[#4c4f69] "
+    >
+      Lorem Ipsum
+    </p>
+    <div
+      className="flex flex-row "
+    >
+      <a
+        href="#htmlUrl"
+      >
+        <img
+          alt=""
+          className="h-7 "
+          src="https://api.iconify.design/mdi:github.svg"
+        />
+      </a>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`Profile Display component > should match component snapshot 1`] = `
+exports[`Profile Display component > should match component snapshot while loading profile 1`] = `
 <div
   className="h-60 flex items-center justify-center"
 >

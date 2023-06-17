@@ -1,14 +1,13 @@
 open Vitest
-open Bindings
+open Setup
 open ReactTestingLibrary
 open JsDom
 
 describe("App Component", _ => {
-  beforeEach(() => {
-    render(<App />)
-  })
 
-  test("should render homepage component", (_) => {
+  test("should render homepage component", _ => {
+    render(<App />)
+
     screen->getByText("Github Profile Search")->expect->toBeInTheDocument
   })
 })

@@ -1,67 +1,44 @@
 open Vitest
-open Bindings
+open Setup
 open ReactTestingLibrary
 open ReactTestRenderer
 open JsDom
 
 let sleep = ms => {
-  Js.Promise2.make((~resolve, ~reject) => {
+  Js.Promise2.make((~resolve, ~reject as _) => {
     setTimeout(() => resolve(. ()), ms)->ignore
     ()
   })
 }
 
-type createFetchResponse = {json: unit => Js.Promise.t<string>}
-let createFetchResponse: string => createFetchResponse = data => {
-  {
-    json: () =>
-      Js.Promise2.make((~resolve, ~reject) => {
-        resolve(. data)
-      }),
-  }
-}
-
 describe("Profile Display component", _ => {
-  beforeAll(() => {
-    %raw(`
-        global.fetch = () => {
-            return {
-                json: Vitest$1.vi.fn(
-                    () => ({
-                        login: "johnny",
-                        name: "John Doe",
-                        followers: 100,
-                        following: 99,
-                        bio: "Lorem Ipsum",
-                        html_url: "#htmlUrl",
-                        avatar_url: "#avatarUrl",
-                    })
-                )
-            }
-        }
-    `)
-  })
-
-  test("should match component snapshot", t => {
-    t->assertions(1)
-
-    create(<ProfileDisplay username="johnny" />)->expect->toMatchSnapshot
-  })
-
-  testAsync("should match component snapshot", async t => {
-    t->assertions(1)
+  testAsync("should fetch data and display on the component", async t => {
+    t->assertions(4)
 
     act(() => render(<ProfileDisplay username="johnny" />))
 
     await sleep(1000)
 
+    screen->getByText("johnny")->expect->toBeInTheDocument
+    screen->getByText("100 Followers")->expect->toBeInTheDocument
+    screen->getByText("99 Following")->expect->toBeInTheDocument
     screen->getByText("Lorem Ipsum")->expect->toBeInTheDocument
+  })
 
-    /*
-    TODO: Create a way to mock globals
-    %raw(`
-        expect(fetch().json).toHaveBeenCalledTimes(1)
-    `)
-    */
+  test("should match component snapshot while loading profile", t => {
+    t->assertions(1)
+
+    create(<ProfileDisplay username="johnny" />)->expect->toMatchSnapshot
+  })
+
+  
+  testAsync("should match component snapshot after profile loaded", async t => {
+    t->assertions(1)
+
+    let profileDisplayComponent = create(<ProfileDisplay username="johnny" />)
+
+    await sleep(1000)
+
+    profileDisplayComponent->expect->toMatchSnapshot
   })
 })
