@@ -1,6 +1,6 @@
 @react.component
 let make = (~className="", ~children) => {
-    let className = `flex flex-row ${className}`
+  let className = `flex flex-row ${className}`
 
-    <div className>children</div>
+  <div className> children </div>
 }
