@@ -1,12 +1,14 @@
 type context = {
   previews: option<GithubService.githubUserPreviewList>,
-  setPreviews: (option<GithubService.githubUserPreviewList> => option<GithubService.githubUserPreviewList>) => unit,
+  setPreviews: (
+    option<GithubService.githubUserPreviewList> => option<GithubService.githubUserPreviewList>
+  ) => unit,
   searchQuery: string,
   setSearchQuery: (string => string) => unit,
   loading: bool,
   setLoading: (bool => bool) => unit,
   page: int,
-  setPage: (int => int) => unit
+  setPage: (int => int) => unit,
 }
 
 let context = React.createContext({
@@ -28,14 +30,14 @@ let captureQueryParam = () => {
   let url = RescriptReactRouter.dangerouslyGetInitialUrl()
   let pattern = %re("/(?<=q=)[a-zA-Z0-9]+/g")
   switch Js.Re.exec_(pattern, url.search) {
-    | Some(queryResults) => {
+  | Some(queryResults) => {
       let results = Js.Re.captures(queryResults)
       switch results->Js.Array2.shift {
-        | Some(result) => result->Js.Nullable.toOption->Belt.Option.getExn
-        | None => ""
+      | Some(result) => result->Js.Nullable.toOption->Belt.Option.getExn
+      | None => ""
       }
     }
-    | None => ""
+  | None => ""
   }
 }
 
@@ -45,30 +47,39 @@ module Provider = {
     let initialSearchQuery = captureQueryParam()
     let (searchQuery, setSearchQuery) = React.useState(() => initialSearchQuery)
     let (previews, setPreviews) = React.useState(() => None)
-    let (loading, setLoading) = React.useState(() => initialSearchQuery !== ""? true : false)
+    let (loading, setLoading) = React.useState(() => initialSearchQuery !== "" ? true : false)
     let (page, setPage) = React.useState(() => 1)
 
     let value = {
-      previews, setPreviews,
-      searchQuery, setSearchQuery,
-      loading, setLoading,
-      page, setPage,
+      previews,
+      setPreviews,
+      searchQuery,
+      setSearchQuery,
+      loading,
+      setLoading,
+      page,
+      setPage,
     }
 
     let loadSuggestions = React.useCallback1(async () => {
-      try{
-        if(searchQuery == "") { Js.Exn.raiseError("") }
+      try {
+        if searchQuery == "" {
+          Js.Exn.raiseError("")
+        }
 
         setLoading(_ => true)
 
-        let userPreviews = await GithubService.getUserPreviewList(searchQuery, page->Js.Int.toString)
+        let userPreviews = await GithubService.getUserPreviewList(
+          searchQuery,
+          page->Js.Int.toString,
+        )
 
-        setPreviews((_) => Some(userPreviews))
+        setPreviews(_ => Some(userPreviews))
         RescriptReactRouter.push(`/search?q=${searchQuery}`)
       } catch {
-        | _ => {
+      | _ => {
           RescriptReactRouter.push("/")
-          setPreviews((_) => None)
+          setPreviews(_ => None)
         }
       }
 
@@ -76,12 +87,10 @@ module Provider = {
     }, [searchQuery, page->Js.Int.toString])
 
     React.useEffect1(() => {
-        let debounce = setTimeout(() => loadSuggestions()->ignore, 500)
-        Some(() => clearTimeout(debounce))
+      let debounce = setTimeout(() => loadSuggestions()->ignore, 500)
+      Some(() => clearTimeout(debounce))
     }, [loadSuggestions])
 
-    <ProviderWrapper value>
-      children
-    </ProviderWrapper>
+    <ProviderWrapper value> children </ProviderWrapper>
   }
 }
