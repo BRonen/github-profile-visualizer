@@ -90,7 +90,9 @@ let getUserProfile = async username => {
 }
 
 let getUserPreviewList = async (query, page) => {
-  let response = await CrossFetch.fetch(`${baseUrl}/search/users?q=${query}&page=${page}&per_page=10`)
+  let response = await CrossFetch.fetch(
+    `${baseUrl}/search/users?q=${query}&page=${page}&per_page=10`,
+  )
   let data = await Fetch.Response.json(response)
   validateUserPreviewList(data)
 }

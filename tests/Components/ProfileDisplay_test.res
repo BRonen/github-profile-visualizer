@@ -1,15 +1,9 @@
 open Vitest
 open Setup
+open Utils
 open ReactTestingLibrary
 open ReactTestRenderer
 open JsDom
-
-let sleep = ms => {
-  Js.Promise2.make((~resolve, ~reject as _) => {
-    setTimeout(() => resolve(. ()), ms)->ignore
-    ()
-  })
-}
 
 describe("Profile Display component", _ => {
   testAsync("should fetch data and display on the component", async t => {
@@ -31,7 +25,6 @@ describe("Profile Display component", _ => {
     create(<ProfileDisplay username="johnny" />)->expect->toMatchSnapshot
   })
 
-  
   testAsync("should match component snapshot after profile loaded", async t => {
     t->assertions(1)
 

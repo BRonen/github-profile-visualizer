@@ -19,7 +19,8 @@ let make = () => {
 
   switch (context.loading, context.previews) {
   | (true, _) => <Loading />
-  | (false, Some(previews)) => <>
+  | (false, Some(previews)) =>
+    <>
       <Title className="mb-8">
         {`Found a total of ${previews.totalCount->Int.toString} results`->React.string}
       </Title>
