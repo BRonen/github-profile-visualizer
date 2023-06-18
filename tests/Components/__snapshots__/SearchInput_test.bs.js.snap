@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Profile Display component > should match component snapshot 1`] = `
+exports[`Search input component > should match component snapshot 1`] = `
 <input
   className="rounded-md h-8 w-full mx-96 px-2 py-1 border shadow-sm focus:shadow-md transition-all focus:outline-none"
   onChange={[Function]}

@@ -5,7 +5,7 @@ open ReactTestingLibrary
 open ReactTestRenderer
 open JsDom
 
-describe("Profile Display component", _ => {
+describe("Search input component", _ => {
   testAsync("should clear the pagination and update search query on change", async t => {
     t->assertions(4)
 
