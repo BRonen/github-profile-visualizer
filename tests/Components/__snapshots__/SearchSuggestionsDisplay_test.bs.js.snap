@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Search suggestion preview card component > should match component snapshot 1`] = `
+<a
+  onClick={[Function]}
+>
+  <div
+    className="flex flex-row items-center gap-3 h-40 p-3 bg-gray-100 shadow-md cursor-pointer hover:scale-[1.02] transition-transform"
+  >
+    <img
+      alt="Profile picture"
+      className="rounded-lg border shadow-lg h-32"
+      src="#avatarUrl"
+    />
+    <h2
+      className="text-2xl text-[#4c4f69] "
+    >
+      johnny
+    </h2>
+  </div>
+</a>
+`;
