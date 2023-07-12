@@ -13,45 +13,33 @@ module PaginationButton = {
   }
 }
 
+let getPaginationButtonsNumbers = (currentPage, totalPagesCount) => {
+  if totalPagesCount == 1 {
+    [1]
+  } else if totalPagesCount == 2 {
+    [1, 2]
+  } else if currentPage == 1 || currentPage == 2 {
+    [1, 2, 3]
+  } else if currentPage >= 3 && currentPage < totalPagesCount {
+    [currentPage - 1, currentPage, currentPage + 1]
+  } else {
+    [currentPage - 2, currentPage - 1, currentPage]
+  }
+}
+
 @react.component
 let make = () => {
   let context = React.useContext(SearchContext.context)
 
   switch context.previews {
   | Some(previews) => {
-      let pagesCount = (previews.totalCount->Int.toFloat /. 10.0)->Math.ceil->Float.toInt
+    let pagesCount = (previews.totalCount->Int.toFloat /. 10.0)->Math.ceil->Float.toInt
 
-      <Row className="mt-3 gap-3 justify-end">
-        <button
-          className={`rounded-full border shadow px-3 py-1 aspect-square ${context.page == 1
-              ? "bg-stone-100"
-              : ""} hover:bg-stone-200`}
-          onClick={_ => context.setPage(page => page - 1)}
-          disabled={context.page == 1}>
-          <img
-            src="https://api.iconify.design/material-symbols:arrow-back.svg"
-            className="h-4"
-            alt="back arrow pagination button"
-          />
-        </button>
-        <span
-          className="grid place-items-center w-10 rounded-full border shadow px-3 py-1 aspect-square text-lg">
-          {context.page->React.int}
-        </span>
-        <button
-          className={`rounded-full border shadow px-3 py-1 aspect-square ${context.page ==
-              pagesCount
-              ? "bg-stone-100"
-              : ""} hover:bg-stone-200`}
-          onClick={_ => context.setPage(page => page + 1)}
-          disabled={context.page == pagesCount}>
-          <img
-            src="https://api.iconify.design/material-symbols:arrow-forward.svg"
-            className="h-4"
-            alt="back arrow pagination button"
-          />
-        </button>
-      </Row>
+    let pageButtons: array<int> = getPaginationButtonsNumbers(context.page, pagesCount)
+
+    <Row className="mt-3 gap-3 justify-end">
+      {Belt.Array.map(pageButtons, pageButton => <PaginationButton page={pageButton}/>)->React.array}
+    </Row>
     }
   | None => <> </>
   }
