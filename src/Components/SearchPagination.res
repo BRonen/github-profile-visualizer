@@ -33,13 +33,15 @@ let make = () => {
 
   switch context.previews {
   | Some(previews) => {
-    let pagesCount = (previews.totalCount->Int.toFloat /. 10.0)->Math.ceil->Float.toInt
+      let pagesCount = (previews.totalCount->Int.toFloat /. 10.0)->Math.ceil->Float.toInt
 
-    let pageButtons: array<int> = getPaginationButtonsNumbers(context.page, pagesCount)
+      let pageButtons: array<int> = getPaginationButtonsNumbers(context.page, pagesCount)
 
-    <Row className="mt-3 gap-3 justify-end">
-      {Belt.Array.map(pageButtons, pageButton => <PaginationButton page={pageButton}/>)->React.array}
-    </Row>
+      <Row className="mt-3 gap-3 justify-end">
+        {Belt.Array.map(pageButtons, pageButton =>
+          <PaginationButton page={pageButton} />
+        )->React.array}
+      </Row>
     }
   | None => <> </>
   }
