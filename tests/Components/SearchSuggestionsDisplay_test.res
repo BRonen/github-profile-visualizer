@@ -1,7 +1,5 @@
 open Vitest
 open Setup
-open Utils
-open ReactTestingLibrary
 open ReactTestRenderer
 open JsDom
 open GithubService
